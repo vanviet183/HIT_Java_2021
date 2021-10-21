@@ -8,12 +8,12 @@ public class Bai1 {
         m = 6;
         n = 8;
 
-        for(int i = 1; i <= m; i++) {
-            for(int j = 1; j <= n; j++) {
-                if(i == 1 || i == m) {
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (i == 1 || i == m) {
                     System.out.print("*");
                 } else {
-                    if(j == 1 || j == n) {
+                    if (j == 1 || j == n) {
                         System.out.print("*");
                     } else {
                         System.out.print(" ");

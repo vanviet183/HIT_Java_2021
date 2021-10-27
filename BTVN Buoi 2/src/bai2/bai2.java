@@ -104,8 +104,8 @@ public class bai2 {
             k = sc.nextInt();
         } while (k < 1 || k > n);
         int[] aReduce = new int[n - 1];
-        for (int i = 0; i < n; i++) {
-            if(i < k) {
+        for (int i = 0; i < n - 1; i++) {
+            if(i < k - 1) {
                 aReduce[i] = a[i];
             } else {
                 aReduce[i - 1] = a[i];
@@ -156,7 +156,7 @@ public class bai2 {
                 return false;
             }
         }
-        return true;
+        return n > 1;
     }
 
     public static void sumPrime() {

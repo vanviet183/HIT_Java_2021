@@ -2,14 +2,15 @@ package bai3;
 
 public class Guns {
     private String weaponName;
-    private int ammoNumber = 100;
+    private int ammoNumber;
 
     Guns() {
 
     }
 
-    Guns(String weaponName) {
+    Guns(String weaponName, int ammoNumber) {
         this.weaponName = weaponName;
+        this.ammoNumber = 100;
     }
 
     public void setWeaponName(String weaponName) {

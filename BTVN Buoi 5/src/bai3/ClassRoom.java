@@ -6,7 +6,7 @@ public class ClassRoom {
     private String idClassRoom;
     private String nameClassRoom;
     private String dateOpen;
-    private ArrayList<Student> x = new ArrayList<>();
+    private ArrayList<Student> Student = new ArrayList<>();
     private int n;
     private String teacher;
 
@@ -38,12 +38,12 @@ public class ClassRoom {
         this.dateOpen = dateOpen;
     }
 
-    public ArrayList<Student> getX() {
-        return x;
+    public ArrayList<Student> getStudent() {
+        return Student;
     }
 
-    public void setX(ArrayList<Student> x) {
-        this.x = x;
+    public void setStudent(ArrayList<Student> student) {
+        Student = student;
     }
 
     public int getN() {

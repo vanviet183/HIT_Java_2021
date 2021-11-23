@@ -2,7 +2,9 @@ package bai2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class bai2 {
@@ -24,109 +26,140 @@ public class bai2 {
                     AddBook(books);
                     break;
                 case 2:
-//                    EditBook();
+                    EditBookById(books);
                     break;
                 case 3:
-                          
+                    DeleteBook(books);
+                    break;
+                case 4:
+                    SortNameBook(books);
+                    break;
+                case 5:
+                    SortPriceBook(books);
+                    break;
+                case 6:
+                    ShowALlBook(books);
+                    break;
+                case 7:
+                    System.exit(1);
+                default:
+                    break;
             }
-        }
+        } while (true);
     }
 
-    public void Input(Book a) {
+    public static void Input(Book a) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Nhap id: ");
+        System.out.print("Nhap id: ");
         a.setId(sc.nextInt());
-        System.out.println("Nhap ten: ");
+        sc.nextLine();
+        System.out.print("Nhap ten: ");
         a.setName(sc.nextLine());
-        System.out.println("Nhap nha xuat ban: ");
+        System.out.print("Nhap nha xuat ban: ");
         a.setPublisher(sc.nextLine());
-        System.out.println("Nhap gia: ");
+        System.out.print("Nhap gia: ");
         a.setPrice(sc.nextDouble());
-        System.out.println("Nhap so trang: ");
+        System.out.print("Nhap so trang: ");
         a.setNumberOfPage(sc.nextInt());
-        System.out.println("Nhap tac gia: ");
+        sc.nextLine();
+        System.out.print("Nhap tac gia: ");
         a.setAuthor(sc.nextLine());
     }
 
     // Add book
     public static void AddBook(ArrayList<Book> a) {
-        for(int i = 0; i < a.size(); i++) {
-            System.out.println("Nhap sach: ");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhap so luong muon add: ");
+        int n = sc.nextInt();
+        for(int i = 0; i < n; i++) {
+            System.out.println("\tNhap sach " + (i + 1) + ": ");
             Book book = new Book();
             Input(book);
             a.add(book);
         }
+        System.out.println("Add thanh cong!!");
     }
 
-    // Edit book
-    public void EditBookById(ArrayList<Book> a) {
-        int x;
+    // Edit book by id
+    public static void EditBookById(ArrayList<Book> a) {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Chon book can sua: ");
-        x = sc.nextInt();
+        System.out.print("Nhap id book can sua: ");
+        int idEdit = sc.nextInt();
+        int dem = 0;
         for (int i = 0; i < a.size(); i++) {
-            if(i == x) {
-                do{
-                    System.out.println("1.Sua id: ");
-                    System.out.println();
-                }
+            if(a.get(i).getId() == idEdit) {
+                dem++;
+                System.out.println("\tNhap thong tin muon sua: ");
+                Input(a.get(i));
             }
         }
+        if(dem > 0) {
+            System.out.println("Danh sach books sau khi sua: ");
+            ShowALlBook(a);
+        } else {
+            System.out.println("Books ko co idBook " + idEdit);
+        }
+        
     }
 
-    // Delete book
-    public void DeleteBook(ArrayList<Book> a) {
+    // Delete book by id
+    public static void DeleteBook(ArrayList<Book> a) {
         int x;
         Scanner sc = new Scanner(System.in);
-        System.out.print("Chon book can xoa: ");
-        do {
-            x = sc.nextInt();
-        } while(x < 0 || x > a.size());
-        x = sc.nextInt();
-        for (int i = x; i < a.size(); i++) {
-            a.set(a.get(i), a.get(i + 1));
+        System.out.print("Chon id book can xoa: ");
+        int idDel = sc.nextInt();
+        int dem = 0;
+        for (int i = 0; i < a.size(); i++) {
+            if(a.get(i).getId() == idDel) {
+                dem++;
+                a.remove(i);
+                break;
+            }
+        }
+        if(dem > 0) {
+            System.out.println("Danh sach books sau khi xoa");
+            ShowALlBook(a);
+        } else {
+            System.out.println("Books ko co idBook " + idDel);
         }
     }
 
     // Sort by name
-    public void SortNameBook(ArrayList<Book> a) {
+    public static void SortNameBook(ArrayList<Book> a) {
         for (int i = 0; i < a.size(); i++) {
             for(int j = i + 1; j < a.size(); j++) {
                 if(a.get(i).getName().compareTo(a.get(j).getName()) > 0) {
-                    Book temp = a.get(i);
-                    a.set(i, a.get(j));
-                    a.set(j, temp);
+                    Collections.swap(a, i, j);
                 }
             }
         }
+        System.out.println("Danh sach books sau khi sap xep: ");
+        ShowALlBook(a);
     }
 
     // Sort by price
-    public void SortPriceBook(ArrayList<Book> a) {
+    public static void SortPriceBook(ArrayList<Book> a) {
         for (int i = 0; i < a.size(); i++) {
             for(int j = i + 1; j < a.size(); j++) {
-                if(a.get(i).getPrice() > a.get(j).getPrice()){
-                    Book temp = a.get(i);
-                    a.set(i, a.get(j));
-                    a.set(j, temp);
+                if(a.get(i).getPrice() < a.get(j).getPrice()){
+                    Collections.swap(a, i, j);
                 }
             }
         }
+        System.out.println("Danh sach books sau khi sap xep: ");
+        ShowALlBook(a);
     }
 
     // Show all
-    public void ShowALlBook(ArrayList<Book> a) {
+    public static void ShowALlBook(ArrayList<Book> a) {
+        System.out.printf("%15s %15s %15s %15s %15s %15s\n", "Id", "Name", "Publisher", "Price", "Number Of Page", "Author");
         for(int i = 0; i < a.size(); i++) {
-            a.get(i).OutPut();
+            OutPut(a.get(i));
         }
     }
 
-    public void OutPut(Book a) {
-        System.out.println("Id: " + a.getId());
-        System.out.println("Ten sach: " +a.getName());
-        System.out.println("Nha xuat ban: " + a.getPublisher());
-        System.out.println("Gia : " + a.getPrice());
-        System.out.println("So trang: " +a.getNumberOfPage());
-        System.out.println("Tac gia: "+a.getAuthor());
+    public static void OutPut(Book a) {
+        System.out.printf("%15s %15s %15s %15s %15s %15s\n", a.getId(), a.getName(), a.getPublisher(), a.getPrice(), a.getNumberOfPage(), a.getAuthor());
     }
+
 }

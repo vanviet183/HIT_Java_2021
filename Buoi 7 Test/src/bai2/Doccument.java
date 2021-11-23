@@ -38,12 +38,6 @@ public class Doccument {
         this.price = price;
     }
 
-    public Doccument(int id, String name, String publisher, double price) {
-        this.id = id;
-        this.name = name;
-        this.publisher = publisher;
-        this.price = price;
-    }
 
     public Doccument() {
 

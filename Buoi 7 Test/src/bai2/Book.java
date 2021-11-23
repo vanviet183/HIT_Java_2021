@@ -20,5 +20,4 @@ public class Book extends  Doccument {
         this.author = author;
     }
 
-
 }

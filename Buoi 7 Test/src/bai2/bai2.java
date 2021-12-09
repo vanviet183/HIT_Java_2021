@@ -1,16 +1,14 @@
 package bai2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class bai2 {
+    static ArrayList<Book> books = new ArrayList<Book>();
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        ArrayList<Book> books = new ArrayList<Book>();
-        Scanner sc = new Scanner(System.in);
         do {
             System.out.println("1.Add book");
             System.out.println("2.Edit book by id");
@@ -20,25 +18,25 @@ public class bai2 {
             System.out.println("6.Show all books");
             System.out.println("7.Exit");
             System.out.print("Nhập lựa chọn: ");
-            int chon = sc.nextInt();
-            switch (chon) {
+            int choose = sc.nextInt();
+            switch (choose) {
                 case 1:
-                    AddBook(books);
+                    addBook();
                     break;
                 case 2:
-                    EditBookById(books);
+                    editBookById();
                     break;
                 case 3:
-                    DeleteBook(books);
+                    deleteBook();
                     break;
                 case 4:
-                    SortNameBook(books);
+                    sortNameBook();
                     break;
                 case 5:
-                    SortPriceBook(books);
+                    sortPriceBook();
                     break;
                 case 6:
-                    ShowALlBook(books);
+                    showALlBook();
                     break;
                 case 7:
                     System.exit(1);
@@ -48,118 +46,112 @@ public class bai2 {
         } while (true);
     }
 
-    public static void Input(Book a) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap id: ");
-        a.setId(sc.nextInt());
-        sc.nextLine();
-        System.out.print("Nhap ten: ");
-        a.setName(sc.nextLine());
-        System.out.print("Nhap nha xuat ban: ");
-        a.setPublisher(sc.nextLine());
-        System.out.print("Nhap gia: ");
-        a.setPrice(sc.nextDouble());
-        System.out.print("Nhap so trang: ");
-        a.setNumberOfPage(sc.nextInt());
-        sc.nextLine();
-        System.out.print("Nhap tac gia: ");
-        a.setAuthor(sc.nextLine());
-    }
-
     // Add book
-    public static void AddBook(ArrayList<Book> a) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap so luong muon add: ");
-        int n = sc.nextInt();
-        for(int i = 0; i < n; i++) {
-            System.out.println("\tNhap sach " + (i + 1) + ": ");
-            Book book = new Book();
-            Input(book);
-            a.add(book);
+    public static void addBook() {
+        Book book = new Book();
+        book.Input();
+        if(isContain(book.getId())) {
+            System.out.println("Duplicate id");
+            return;
         }
+        books.add(book);
         System.out.println("Add thanh cong!!");
     }
 
     // Edit book by id
-    public static void EditBookById(ArrayList<Book> a) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Nhap id book can sua: ");
+    public static void editBookById() {
+        if(books.isEmpty()) {
+            System.out.println("List rỗng!");
+            return;
+        }
+        System.out.print("Nhap id book can edit: ");
         int idEdit = sc.nextInt();
-        int dem = 0;
-        for (int i = 0; i < a.size(); i++) {
-            if(a.get(i).getId() == idEdit) {
-                dem++;
+        if(!isContain(idEdit)) {
+            System.out.println("Duplicate id");
+            return;
+        }
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getId() == idEdit) {
                 System.out.println("\tNhap thong tin muon sua: ");
-                Input(a.get(i));
+                books.get(i).Edit();
             }
         }
-        if(dem > 0) {
-            System.out.println("Danh sach books sau khi sua: ");
-            ShowALlBook(a);
-        } else {
-            System.out.println("Books ko co idBook " + idEdit);
-        }
-        
     }
 
     // Delete book by id
-    public static void DeleteBook(ArrayList<Book> a) {
-        int x;
-        Scanner sc = new Scanner(System.in);
+    public static void deleteBook() {
+        if(books.isEmpty()) {
+            System.out.println("List rỗng!");
+            return;
+        }
         System.out.print("Chon id book can xoa: ");
         int idDel = sc.nextInt();
-        int dem = 0;
-        for (int i = 0; i < a.size(); i++) {
-            if(a.get(i).getId() == idDel) {
-                dem++;
-                a.remove(i);
+        if(!isContain(idDel)) {
+            System.out.println("Duplicate id");
+            return;
+        }
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getId() == idDel) {
+                books.remove(i);
                 break;
             }
-        }
-        if(dem > 0) {
-            System.out.println("Danh sach books sau khi xoa");
-            ShowALlBook(a);
-        } else {
-            System.out.println("Books ko co idBook " + idDel);
         }
     }
 
     // Sort by name
-    public static void SortNameBook(ArrayList<Book> a) {
-        for (int i = 0; i < a.size(); i++) {
-            for(int j = i + 1; j < a.size(); j++) {
-                if(a.get(i).getName().compareTo(a.get(j).getName()) > 0) {
-                    Collections.swap(a, i, j);
-                }
-            }
+    public static void sortNameBook() {
+//        for (int i = 0; i < books.size(); i++) {
+//            for(int j = i + 1; j < books.size(); j++) {
+//                if(books.get(i).getName().compareTo(books.get(j).getName()) > 0) {
+//                    Collections.swap(books, i, j);
+//                }
+//            }
+//        }
+        if(books.isEmpty()) {
+            System.out.println("List rỗng!");
+            return;
         }
-        System.out.println("Danh sach books sau khi sap xep: ");
-        ShowALlBook(a);
+        Collections.sort(books, new Comparator<Book>() {
+            @Override
+            public int compare(Book b1, Book b2) {
+                return b1.getName().compareTo(b2.getName());
+            }
+        });
     }
 
     // Sort by price
-    public static void SortPriceBook(ArrayList<Book> a) {
-        for (int i = 0; i < a.size(); i++) {
-            for(int j = i + 1; j < a.size(); j++) {
-                if(a.get(i).getPrice() < a.get(j).getPrice()){
-                    Collections.swap(a, i, j);
+    public static void sortPriceBook() {
+        if(books.isEmpty()) {
+            System.out.println("List rỗng!");
+            return;
+        }
+        for (int i = 0; i < books.size(); i++) {
+            for(int j = i + 1; j < books.size(); j++) {
+                if(books.get(i).getPrice() < books.get(j).getPrice()){
+                    Collections.swap(books, i, j);
                 }
             }
         }
-        System.out.println("Danh sach books sau khi sap xep: ");
-        ShowALlBook(a);
     }
 
     // Show all
-    public static void ShowALlBook(ArrayList<Book> a) {
+    public static void showALlBook() {
+        if(books.isEmpty()) {
+            System.out.println("List rỗng!");
+            return;
+        }
         System.out.printf("%15s %15s %15s %15s %15s %15s\n", "Id", "Name", "Publisher", "Price", "Number Of Page", "Author");
-        for(int i = 0; i < a.size(); i++) {
-            OutPut(a.get(i));
+        for(int i = 0; i < books.size(); i++) {
+            books.get(i).Output();
         }
     }
 
-    public static void OutPut(Book a) {
-        System.out.printf("%15s %15s %15s %15s %15s %15s\n", a.getId(), a.getName(), a.getPublisher(), a.getPrice(), a.getNumberOfPage(), a.getAuthor());
+    public static boolean isContain(int id) {
+        for(Book book : books) {
+            if(book.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
-
 }
